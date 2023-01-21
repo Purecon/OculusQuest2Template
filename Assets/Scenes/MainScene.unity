@@ -160,7 +160,7 @@ MonoBehaviour:
   dataSrc: []
   dataMetrics: []
   data: {fileID: 4900000, guid: 882bad982c03b974fb87a8b46680dfd1, type: 3}
-  dataMappedMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  dataMappedMaterial: {fileID: 2100000, guid: 76b2de65c5c0a044e8216e2526cb4350, type: 2}
 --- !u!4 &68472203
 Transform:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 68472201}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.356, z: 0}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_Children: []
   m_Father: {fileID: 488680367}

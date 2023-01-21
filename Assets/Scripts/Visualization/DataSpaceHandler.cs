@@ -77,6 +77,7 @@ public class DataSpaceHandler : MonoBehaviour
                 colors[t] = new Color(float.Parse(attributes[4], System.Globalization.CultureInfo.InvariantCulture),
                     float.Parse(attributes[5], System.Globalization.CultureInfo.InvariantCulture),
                     float.Parse(attributes[6], System.Globalization.CultureInfo.InvariantCulture));
+                //Debug.Log(colors[t]);
                 // newVertices[t] += normals[i] * Mathf.Sin(Time.time);
                 //colors[t] = new Color(0.2f, 0.6f, 0.4f);
             }
