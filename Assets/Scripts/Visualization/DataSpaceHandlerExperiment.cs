@@ -16,7 +16,7 @@ public class DataSpaceHandlerExperiment : MonoBehaviour
     public List<string> dataSrc;
     public List<Vector3> dataMetrics;
     public List<Color> dataColors;
-    public List<Color> dataColorsAll;
+    public List<Color> dataColorsUnique;
 
     [Header("Data")]
     [SerializeField]
@@ -95,7 +95,6 @@ public class DataSpaceHandlerExperiment : MonoBehaviour
                 // newVertices[t] += normals[i] * Mathf.Sin(Time.time);
                 //colors[t] = new Color(0.2f, 0.6f, 0.4f);
                 */
-                dataColorsAll.Add(new Color(colorR, colorG, colorB));
             }
             //mesh.colors = colors;
             //Color list
@@ -105,6 +104,10 @@ public class DataSpaceHandlerExperiment : MonoBehaviour
 
             count++;
         }
+
+        //Unique color
+        dataColorsUnique = new List<Color>(dataColors.Distinct());
+
         createTiledCube(childCat1);
 
         gameObject.transform.localScale = localScale;
@@ -181,8 +184,10 @@ public class DataSpaceHandlerExperiment : MonoBehaviour
             cube.transform.localScale = new Vector3(1, 1, 1);
 
             //Collider
+            /*
             BoxCollider boxCollider = cube.AddComponent<BoxCollider>();
             boxCollider.isTrigger = true;
+            */
 
             tempObjectsAll.Add(cube);
             count++;
@@ -201,10 +206,42 @@ public class DataSpaceHandlerExperiment : MonoBehaviour
         return cubeParent;
         */
 
+        foreach(Color c in dataColorsUnique)
+        {
+            List<GameObject> tempObjects = new List<GameObject>();
+            Material tempMaterial = null;
+            foreach (GameObject o in tempObjectsAll)
+            {
+                MeshRenderer renderer = o.GetComponent<MeshRenderer>();
+                //Group the same color
+                if(renderer.material.color == c)
+                {
+                    tempObjects.Add(o);
+                    tempMaterial = renderer.material;
+                }
+            }
+
+
+            GameObject cubeParent = new GameObject("CubeParent");
+            cubeParent.transform.parent = parent.transform;
+
+            MeshFilter filterParent = cubeParent.AddComponent<MeshFilter>();
+            MeshRenderer rendererParent = cubeParent.AddComponent<MeshRenderer>();
+
+            rendererParent.material = tempMaterial;
+            mergeChildren(cubeParent, tempObjects, filterParent);
+        }
+
+        /*
+        GameObject cubeParent = tempObjectsAll[0];
+        tempObjectsAll.Remove(cubeParent);
+        mergeChildren(cubeParent, tempObjectsAll, cubeParent.GetComponent<MeshFilter>());
+        */
+
         return parent;
     }
 
-    private void mergeChildren(GameObject parent, List<GameObject> objects, MeshFilter target, bool last = false)
+    private void mergeChildren(GameObject parent, List<GameObject> objects, MeshFilter target)
     {
         CombineInstance[] combine = new CombineInstance[objects.Count];
         //        System.Random rnd = new System.Random();
@@ -221,15 +258,6 @@ public class DataSpaceHandlerExperiment : MonoBehaviour
         }
 
         target.mesh.CombineMeshes(combine);
-
-        if (last)
-        {
-            target.mesh.CombineMeshes(combine, true, true);
-            Debug.Log("----");
-            Debug.Log(target.mesh.vertices.Length);
-            target.mesh.colors = dataColorsAll.ToArray();
-        }
-
     }
 
     // Update is called once per frame
